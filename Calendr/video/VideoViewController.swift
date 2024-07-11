@@ -10,7 +10,7 @@ import Cocoa
 import AVFoundation
 
 class VideoViewController: NSViewController {
-    private var captureSession: AVCap  ureSession?
+    private var captureSession: AVCaptureSession?
         private var previewLayer: AVCaptureVideoPreviewLayer?
         private var movieOutput = AVCaptureMovieFileOutput()
         private var recordingTimer: Timer?
