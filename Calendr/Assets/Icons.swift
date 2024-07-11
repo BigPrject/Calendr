@@ -22,6 +22,7 @@ enum Icons {
         static let settings = NSImage(systemName: "ellipsis.circle")
         static let pinned = NSImage(systemName: "pin.fill")
         static let unpinned = NSImage(systemName: "pin")
+        static let video = NSImage(systemName: "video")
     }
 
     enum CalendarPicker {

@@ -40,5 +40,9 @@
 	<string>Calendr needs access to display your reminders.</string>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>Calendr needs access to open Calendar app at the selected date.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera for recording videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone for recording audio.</string>
 </dict>
 </plist>

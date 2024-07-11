@@ -32,6 +32,7 @@ class MainViewController: NSViewController {
     private let remindersBtn = ImageButton()
     private let calendarBtn = ImageButton()
     private let settingsBtn = ImageButton()
+    private let videoBtn = ImageButton()
 
     // ViewModels
     private let calendarViewModel: CalendarViewModel
@@ -224,10 +225,10 @@ class MainViewController: NSViewController {
     override func loadView() {
 
         view = NSView()
-
         let header = makeHeader()
         let toolBar = makeToolBar()
         let eventList = makeEventList()
+        
 
         [header, searchInput, calendarView, toolBar, eventList].forEach(mainStackView.addArrangedSubview)
 
@@ -319,6 +320,7 @@ class MainViewController: NSViewController {
         remindersBtn.setAccessibilityIdentifier(Accessibility.Main.remindersBtn)
         calendarBtn.setAccessibilityIdentifier(Accessibility.Main.calendarBtn)
         settingsBtn.setAccessibilityIdentifier(Accessibility.Main.settingsBtn)
+        videoBtn.setAccessibilityIdentifier(Accessibility.Main.videoBtn)
     }
 
     private func setUpBindings() {
@@ -375,6 +377,18 @@ class MainViewController: NSViewController {
         searchInputText
             .bind(to: searchInput.rx.stringValue)
             .disposed(by: disposeBag)
+        videoBtn.rx.tap
+                    .bind { [weak self] in
+                        self?.presentVideoRecordingController()
+                    }
+                    .disposed(by: disposeBag)
+        
+        
+    }
+    
+    private func presentVideoRecordingController() {
+        let videoRecordingVC = VideoViewController()
+        self.presentAsModalWindow(videoRecordingVC)
     }
 
     private func setUpSettings() {
@@ -660,17 +674,19 @@ class MainViewController: NSViewController {
 
     private func makeToolBar() -> NSView {
 
-        [pinBtn, remindersBtn, calendarBtn, settingsBtn].forEach { $0.size(equalTo: 22) }
+        [pinBtn, videoBtn,remindersBtn,calendarBtn, settingsBtn].forEach { $0.size(equalTo: 22) }
 
         pinBtn.setButtonType(.toggle)
         pinBtn.image = Icons.Calendar.unpinned
         pinBtn.alternateImage = Icons.Calendar.pinned
-
+        
+        videoBtn.image = Icons.Calendar.video.with(scale: .large)
+        
         remindersBtn.image = Icons.Calendar.reminders.with(scale: .large)
         calendarBtn.image = Icons.Calendar.calendar.with(scale: .large)
         settingsBtn.image = Icons.Calendar.settings.with(scale: .large)
 
-        return NSStackView(views: [pinBtn, .spacer, remindersBtn, calendarBtn, settingsBtn])
+        return NSStackView(views: [pinBtn, videoBtn, .spacer, remindersBtn, calendarBtn, settingsBtn])
     }
 
     private func makeDateSelector() -> DateSelector {

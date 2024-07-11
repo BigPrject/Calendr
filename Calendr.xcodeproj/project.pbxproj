@@ -156,6 +156,8 @@
 		34F7E03A28427AC00028FF25 /* EventDetailsPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F7E03928427AC00028FF25 /* EventDetailsPreview.swift */; };
 		34F96CEE25B523ED0020DEEA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F96CED25B523ED0020DEEA /* main.swift */; };
 		34FD09D925AE269600AAAAE2 /* DateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FD09D825AE269600AAAAE2 /* DateProvider.swift */; };
+		A40EBD362C3F33DC0074E2EB /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */; };
+		A40EBD382C3F551B0074E2EB /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40EBD372C3F551B0074E2EB /* ProgressBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -338,6 +340,8 @@
 		34F7E03928427AC00028FF25 /* EventDetailsPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsPreview.swift; sourceTree = "<group>"; };
 		34F96CED25B523ED0020DEEA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		34FD09D825AE269600AAAAE2 /* DateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProvider.swift; sourceTree = "<group>"; };
+		A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		A40EBD372C3F551B0074E2EB /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		C492E3CD29FD64BA007C7DF3 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -492,6 +496,7 @@
 		347D0F9625952F89002451EC /* Calendr */ = {
 			isa = PBXGroup;
 			children = (
+				A40EBD342C3F33AE0074E2EB /* video */,
 				34273C2F25E1AE2800B35091 /* Assets */,
 				348D693E29ABDD99009F1882 /* Automation */,
 				347D0FDD259532E7002451EC /* Calendar */,
@@ -747,6 +752,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		A40EBD342C3F33AE0074E2EB /* video */ = {
+			isa = PBXGroup;
+			children = (
+				A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */,
+				A40EBD372C3F551B0074E2EB /* ProgressBarView.swift */,
+			);
+			path = video;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -963,6 +977,7 @@
 				3421DA182693EEBD00056837 /* MockDateProvider.swift in Sources */,
 				348E701F25C43C5200B3B160 /* WeekDay.swift in Sources */,
 				34091737267E81870023B76D /* NSImage.swift in Sources */,
+				A40EBD362C3F33DC0074E2EB /* VideoViewController.swift in Sources */,
 				34ABB9EE29A163890021F3CF /* ContextMenuFactory.swift in Sources */,
 				3468E653284BD44600B21EC8 /* EventBarStyle.swift in Sources */,
 				34F128E12597B9C9007DF31C /* MainViewController.swift in Sources */,
@@ -1016,6 +1031,7 @@
 				34B5A09725B0F8A500F7F7ED /* NSButton.swift in Sources */,
 				34CC382D25B636A6006CBD99 /* Checkbox.swift in Sources */,
 				3430ED03259634E00045DA53 /* NSStackView+Rx.swift in Sources */,
+				A40EBD382C3F551B0074E2EB /* ProgressBarView.swift in Sources */,
 				34F4C47F2A6C57B300397C80 /* MockStatusItemSettings.swift in Sources */,
 				34F4C47B2A6C54A900397C80 /* StatusItemPreview.swift in Sources */,
 				346C5A4A2BC2D6F60007106C /* NextEventPreview.swift in Sources */,
@@ -1282,12 +1298,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Calendr/Config/Calendr.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 32973VC289;
+				DEVELOPMENT_TEAM = PBL2A8SJ3C;
 				INFOPLIST_FILE = Calendr/Config/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1296,6 +1311,7 @@
 				MARKETING_VERSION = 1.11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = br.paker.Calendr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Calendr/Config/Calendr-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1308,12 +1324,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Calendr/Config/Calendr.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 32973VC289;
+				DEVELOPMENT_TEAM = PBL2A8SJ3C;
 				INFOPLIST_FILE = Calendr/Config/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1322,6 +1337,7 @@
 				MARKETING_VERSION = 1.11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = br.paker.Calendr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Calendr/Config/Calendr-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
