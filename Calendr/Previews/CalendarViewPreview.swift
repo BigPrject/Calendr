@@ -20,11 +20,12 @@ struct CalendarViewPreview: PreviewProvider {
         highlightedWeekdays: [0, 1, 4, 6],
         showWeekNumbers: true
     )
+    static let videoService = MockVideoServiceProvider()
     static let notificationCenter = NotificationCenter()
 
     static let hovered = BehaviorSubject<Date?>(value: .random(from: dateProvider))
     static let selected = BehaviorSubject<Date>(value: .random(inMonth: dateProvider))
-
+    static let videoPlay = PublishSubject<Date>()
     static let events: [EventModel] = (0..<30).map { _ in
         let date: Date = .random(from: dateProvider)
         return .make(start: date, end: date, calendar: .make(color: .random()))
@@ -40,11 +41,14 @@ struct CalendarViewPreview: PreviewProvider {
                 calendarService: calendarService,
                 dateProvider: dateProvider,
                 settings: settings,
-                notificationCenter: notificationCenter
+                notificationCenter: notificationCenter,
+                videoService: videoService
+                
             ),
             hoverObserver: hovered.asObserver(),
             clickObserver: selected.asObserver(),
-            doubleClickObserver: .dummy()
+            doubleClickObserver: .dummy(),
+            videoPlayObserver: videoPlay.asObserver()
         )
         .preview()
         .fixedSize()

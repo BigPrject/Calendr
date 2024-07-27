@@ -104,9 +104,15 @@ class VideoViewController: NSViewController {
             print("Unable to access camera")
             return
         }
+        guard let microphone = AVCaptureDevice.default(for: .audio) else {
+                print("Unable to access microphone")
+                return
+            }
         
         do {
+            
             let input = try AVCaptureDeviceInput(device: camera)
+            let audioInput = try AVCaptureDeviceInput(device: microphone)
             if captureSession.canAddInput(input) {
                 captureSession.addInput(input)
             } else {
@@ -120,6 +126,13 @@ class VideoViewController: NSViewController {
                 print("Unable to add movie output")
                 return
             }
+            if captureSession.canAddInput(audioInput) {
+                        captureSession.addInput(audioInput)
+                    } else {
+                        print("Unable to add audio input")
+                        return
+                    }
+            
             
             setupPreviewLayer()
         } catch {
@@ -159,7 +172,7 @@ class VideoViewController: NSViewController {
         dateFormatter.dateFormat = "MM"
         let monthString = dateFormatter.string(from: Date())
 
-        dateFormatter.dateFormat = "MM--dd--yyyy"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
         let fileNameDate = dateFormatter.string(from: Date())
 
         guard let documentsPath = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
@@ -190,7 +203,7 @@ class VideoViewController: NSViewController {
 
         movieOutput.startRecording(to: filePath, recordingDelegate: self)
         startBtn.isEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 16) {
                 self.stopRecording()
             self.startBtn.title = "Done recording"
             
@@ -211,6 +224,7 @@ extension VideoViewController: AVCaptureFileOutputRecordingDelegate {
         } else {
             print("Video recording completed: \(outputFileURL.path)")
             // Here you could implement logic to save or link the video to a calendar event
+
         }
         
         // Update UI or perform any necessary actions after recording is complete

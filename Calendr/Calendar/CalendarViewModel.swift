@@ -10,8 +10,9 @@ import RxSwift
 
 class CalendarViewModel {
 
-    let cellViewModelsObservable: Observable<[CalendarCellViewModel]>
+    var cellViewModelsObservable: Observable<[CalendarCellViewModel]>
     let focusedDateEventsObservable: Observable<(Date, [EventModel])>
+    let videoService: VideoServiceProviding
 
     let title: Observable<String>
     let weekDays: Observable<[WeekDay]>
@@ -20,6 +21,8 @@ class CalendarViewModel {
     let cellSize: Observable<Double>
     let weekNumbersWidth: Observable<Double>
 
+
+    
     init(
         searchObservable: Observable<String>,
         dateObservable: Observable<Date>,
@@ -28,8 +31,11 @@ class CalendarViewModel {
         calendarService: CalendarServiceProviding,
         dateProvider: DateProviding,
         settings: CalendarSettings,
-        notificationCenter: NotificationCenter
+        notificationCenter: NotificationCenter,
+        videoService: VideoServiceProviding
     ) {
+        self.videoService = videoService
+
 
         let localeChangeObservable = notificationCenter.rx
             .notification(NSLocale.currentLocaleDidChangeNotification)
@@ -79,7 +85,7 @@ class CalendarViewModel {
         let dateCellsObservable = Observable
             .combineLatest(dateRangeObservable, settings.firstWeekday)
             .map { month, firstWeekday -> [CalendarCellViewModel] in
-
+    
                 let calendar = dateProvider.calendar
                 let monthStartWeekDay = calendar.component(.weekday, from: month.start)
 
@@ -92,7 +98,7 @@ class CalendarViewModel {
                 return (0..<42).map { day -> CalendarCellViewModel in
                     let date = calendar.date(byAdding: .day, value: day, to: start)!
                     let inMonth = calendar.isDate(date, equalTo: month.start, toGranularity: .month)
-
+                
                     return CalendarCellViewModel(
                         date: date,
                         inMonth: inMonth,
@@ -100,7 +106,9 @@ class CalendarViewModel {
                         isSelected: false,
                         isHovered: false,
                         events: [],
-                        calendar: calendar
+                        calendar: calendar,
+                        hasVideo: videoService.hasVideoForDate(date)
+
                     )
                 }
             }
@@ -116,6 +124,7 @@ class CalendarViewModel {
         }
         .share(replay: 1)
 
+        
         // Get events for current dates
         let eventsObservable = Observable.combineLatest(
             dateCellsObservable,
@@ -140,7 +149,7 @@ class CalendarViewModel {
         )
         .map { events, showDeclinedEvents, searchTerm in
             events.filter {
-                (showDeclinedEvents || $0.status != .declined)
+                (showDeclinedEvents || $0.status != EventStatus.declined)
                 &&
                 (searchTerm.isEmpty || $0.contains(searchTerm))
             }
@@ -176,7 +185,8 @@ class CalendarViewModel {
                     events: events?.filter { event in
                         dateProvider.calendar.isDate(vm.date, in: (event.start, event.end))
                     },
-                    calendar: dateProvider.calendar
+                    calendar: dateProvider.calendar,
+                    hasVideo: vm.hasVideo
                 )
             }
         }
@@ -191,7 +201,8 @@ class CalendarViewModel {
             cellViewModels.map {
                 $0.with(
                     isSelected: dateProvider.calendar.isDate($0.date, inSameDayAs: selectedDate),
-                    calendar: dateProvider.calendar
+                    calendar: dateProvider.calendar,
+                    hasVideo: $0.hasVideo
                 )
             }
         }
@@ -213,12 +224,13 @@ class CalendarViewModel {
                 return cellViewModels.map {
                     $0.with(
                         isHovered: dateProvider.calendar.isDate($0.date, inSameDayAs: hoveredDate),
-                        calendar: dateProvider.calendar
+                        calendar: dateProvider.calendar,
+                        hasVideo: $0.hasVideo
                     )
                 }
             } else {
                 return cellViewModels.map {
-                    $0.with(isHovered: false, calendar: dateProvider.calendar)
+                    $0.with(isHovered: false, calendar: dateProvider.calendar,hasVideo: $0.hasVideo)
                 }
             }
         }
@@ -255,7 +267,37 @@ class CalendarViewModel {
             }
             .distinctUntilChanged(==)
             .share(replay: 1)
+        
     }
+    func updateCellViewModels() {
+        let videoDates = Set(videoService.getAllVideoDates())
+        
+        // Create a new observable that maps over the existing cell view models
+        let updatedCellViewModels = cellViewModelsObservable.map { cellViewModels in
+            cellViewModels.map { cellViewModel in
+                cellViewModel.with(
+                    isToday: cellViewModel.isToday,
+                    isSelected: cellViewModel.isSelected,
+                    isHovered: cellViewModel.isHovered,
+                    events: cellViewModel.events,
+                    calendar: cellViewModel.calendar,
+                    hasVideo: videoDates.contains(cellViewModel.date)
+                )
+            }
+        }
+        
+        // Combine the updated observable with the existing one
+        cellViewModelsObservable = Observable.combineLatest(
+            cellViewModelsObservable,
+            updatedCellViewModels
+        ) { _, updated in
+            updated
+        }
+        .distinctUntilChanged()
+        .share(replay: 1)
+    }
+   
+    
 }
 
 private extension CalendarCellViewModel {
@@ -265,8 +307,10 @@ private extension CalendarCellViewModel {
         isSelected: Bool? = nil,
         isHovered: Bool? = nil,
         events: [EventModel]? = nil,
-        calendar: Calendar
+        calendar: Calendar,
+        hasVideo: Bool? = nil
     ) -> Self {
+        
 
         CalendarCellViewModel(
             date: date,
@@ -275,9 +319,13 @@ private extension CalendarCellViewModel {
             isSelected: isSelected ?? self.isSelected,
             isHovered: isHovered ?? self.isHovered,
             events: events ?? self.events,
-            calendar: calendar
+            calendar: calendar,
+            hasVideo: hasVideo ?? self.hasVideo
         )
+
     }
+   
+    
 }
 
 private enum Constants {

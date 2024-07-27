@@ -33,6 +33,7 @@ class MainViewController: NSViewController {
     private let calendarBtn = ImageButton()
     private let settingsBtn = ImageButton()
     private let videoBtn = ImageButton()
+    private let playBtn = ImageButton()
 
     // ViewModels
     private let calendarViewModel: CalendarViewModel
@@ -53,6 +54,7 @@ class MainViewController: NSViewController {
     private let isShowingDetails = BehaviorSubject<Bool>(value: false)
     private let searchInputText = BehaviorSubject<String>(value: "")
     private let arrowSubject = PublishSubject<Keyboard.Key.Arrow>()
+    private let videoPlay = PublishSubject<Date>()
 
     // Properties
     private let keyboard = Keyboard()
@@ -60,6 +62,7 @@ class MainViewController: NSViewController {
     private let calendarService: CalendarServiceProviding
     private let dateProvider: DateProviding
     private let screenProvider: ScreenProviding
+    private let videoService: VideoServiceProviding
     private let notificationCenter: NotificationCenter
     private var heightConstraint: NSLayoutConstraint?
 
@@ -72,7 +75,9 @@ class MainViewController: NSViewController {
         dateProvider: DateProviding,
         screenProvider: ScreenProviding,
         userDefaults: UserDefaults,
-        notificationCenter: NotificationCenter
+        notificationCenter: NotificationCenter,
+        videoService: VideoServiceProviding
+
     ) {
 
         self.workspace = workspace
@@ -80,6 +85,8 @@ class MainViewController: NSViewController {
         self.dateProvider = dateProvider
         self.screenProvider = screenProvider
         self.notificationCenter = notificationCenter
+        self.videoService = videoService
+
 
         mainStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         mainStatusItem.autosaveName = StatusItemName.main
@@ -142,14 +149,18 @@ class MainViewController: NSViewController {
             calendarService: calendarService,
             dateProvider: dateProvider,
             settings: settingsViewModel,
-            notificationCenter: notificationCenter
+            notificationCenter: notificationCenter,
+            videoService: videoService
+
         )
 
         calendarView = CalendarView(
             viewModel: calendarViewModel,
             hoverObserver: hoverObserver,
             clickObserver: dateClick.asObserver(),
-            doubleClickObserver: dateDoubleClick.asObserver()
+            doubleClickObserver: dateDoubleClick.asObserver(),
+            videoPlayObserver: videoPlay.asObserver()
+
         )
 
         let eventListEventsObservable = calendarViewModel.focusedDateEventsObservable
@@ -321,6 +332,7 @@ class MainViewController: NSViewController {
         calendarBtn.setAccessibilityIdentifier(Accessibility.Main.calendarBtn)
         settingsBtn.setAccessibilityIdentifier(Accessibility.Main.settingsBtn)
         videoBtn.setAccessibilityIdentifier(Accessibility.Main.videoBtn)
+        playBtn.setAccessibilityIdentifier(Accessibility.Main.playBtn)
     }
 
     private func setUpBindings() {
@@ -361,6 +373,12 @@ class MainViewController: NSViewController {
                 calendarScript.openCalendar(at: date, mode: .day)
             }
             .disposed(by: disposeBag)
+        videoPlay
+                    .subscribe(onNext: { [weak self] date in
+                        print("Playing video for date: \(date)")
+                        self?.playVideo(for: date)
+                    })
+                    .disposed(by: disposeBag)
 
         calendarBtn.rx.tap
             .withLatestFrom(selectedDate)
@@ -382,13 +400,27 @@ class MainViewController: NSViewController {
                         self?.presentVideoRecordingController()
                     }
                     .disposed(by: disposeBag)
+        playBtn.rx.tap
+            .withLatestFrom(selectedDate)
+            .bind{ date in
+                self.playVideo(for: date)
+            }
+            .disposed(by: disposeBag)
         
+
         
     }
     
     private func presentVideoRecordingController() {
         let videoRecordingVC = VideoViewController()
         self.presentAsModalWindow(videoRecordingVC)
+    }
+    
+    
+    private func playVideo(for date: Date) {
+        print("play video clicked")
+        let videoPlayController = VideoPlayController(date: date)
+        presentAsModalWindow(videoPlayController)
     }
 
     private func setUpSettings() {
@@ -420,6 +452,7 @@ class MainViewController: NSViewController {
         }
         .disposed(by: disposeBag)
     }
+    
 
     @objc private func openSettings() {
 
@@ -674,19 +707,20 @@ class MainViewController: NSViewController {
 
     private func makeToolBar() -> NSView {
 
-        [pinBtn, videoBtn,remindersBtn,calendarBtn, settingsBtn].forEach { $0.size(equalTo: 22) }
+        [pinBtn, videoBtn,playBtn,remindersBtn,calendarBtn, settingsBtn].forEach { $0.size(equalTo: 22) }
 
         pinBtn.setButtonType(.toggle)
         pinBtn.image = Icons.Calendar.unpinned
         pinBtn.alternateImage = Icons.Calendar.pinned
         
         videoBtn.image = Icons.Calendar.video.with(scale: .large)
+        playBtn.image = Icons.Calendar.play.with(scale: .large)
         
         remindersBtn.image = Icons.Calendar.reminders.with(scale: .large)
         calendarBtn.image = Icons.Calendar.calendar.with(scale: .large)
         settingsBtn.image = Icons.Calendar.settings.with(scale: .large)
 
-        return NSStackView(views: [pinBtn, videoBtn, .spacer, remindersBtn, calendarBtn, settingsBtn])
+        return NSStackView(views: [pinBtn, videoBtn, playBtn, .spacer, remindersBtn, calendarBtn, settingsBtn])
     }
 
     private func makeDateSelector() -> DateSelector {

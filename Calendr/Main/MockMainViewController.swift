@@ -36,7 +36,8 @@ class MockMainViewController: MainViewController {
             dateProvider: dateProvider,
             screenProvider: ScreenProvider(notificationCenter: notificationCenter),
             userDefaults: userDefaults,
-            notificationCenter: notificationCenter
+            notificationCenter: notificationCenter,
+            videoService: VideoService()
         )
     }
 

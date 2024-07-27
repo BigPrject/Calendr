@@ -17,7 +17,13 @@ class CalendarCellView: NSView {
     private let clickObserver: AnyObserver<Date>
     private let doubleClickObserver: AnyObserver<Date>
     private let calendarScaling: Observable<Double>
+    private let videoPlayObserver: AnyObserver<Date>
 
+    private let videoIndicator: NSImageView = {
+        let symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 16, weight: .regular)
+        let image = NSImage(systemSymbolName: "play.rectangle.fill", accessibilityDescription: "Video")?.withSymbolConfiguration(symbolConfiguration)
+        return NSImageView(image: image ?? NSImage())
+    }()
     private let label = Label()
     private let eventsStackView = NSStackView()
     private let borderLayer = CALayer()
@@ -27,7 +33,9 @@ class CalendarCellView: NSView {
         hoverObserver: AnyObserver<Date?>,
         clickObserver: AnyObserver<Date>,
         doubleClickObserver: AnyObserver<Date>,
-        calendarScaling: Observable<Double>
+        calendarScaling: Observable<Double>,
+        videoPlayObserver: AnyObserver<Date>
+
     ) {
 
         self.viewModel = viewModel
@@ -35,6 +43,7 @@ class CalendarCellView: NSView {
         self.clickObserver = clickObserver
         self.doubleClickObserver = doubleClickObserver
         self.calendarScaling = calendarScaling
+        self.videoPlayObserver = videoPlayObserver
 
         super.init(frame: .zero)
 
@@ -88,7 +97,7 @@ class CalendarCellView: NSView {
         eventsStackView.bottom(equalTo: eventsContainer)
         eventsStackView.center(in: eventsContainer, orientation: .horizontal)
         eventsStackView.widthAnchor.constraint(lessThanOrEqualTo: eventsContainer.widthAnchor).activate()
-
+        
         let contentStackView = NSStackView(views: [label, eventsContainer])
             .with(orientation: .vertical)
             .with(spacing: 2)
@@ -96,6 +105,13 @@ class CalendarCellView: NSView {
         addSubview(contentStackView)
 
         contentStackView.center(in: self)
+        addSubview(videoIndicator)
+        videoIndicator.isHidden = true
+
+                
+        videoIndicator.size(equalTo: 7)
+        videoIndicator.top(equalTo: self, constant: 0)
+
     }
 
     private func setUpBindings() {
@@ -130,6 +146,14 @@ class CalendarCellView: NSView {
             .distinctUntilChanged()
             .bind(to: borderLayer.rx.borderColor)
             .disposed(by: disposeBag)
+        
+        viewModel
+            .map(\.hasVideo)
+            .distinctUntilChanged()
+            .map { !$0 }  // Invert the boolean value
+            .bind(to: videoIndicator.rx.isHidden)
+            .disposed(by: disposeBag)
+
 
         Observable.combineLatest(
             viewModel.map(\.dots).distinctUntilChanged(),
@@ -142,19 +166,19 @@ class CalendarCellView: NSView {
         .disposed(by: disposeBag)
 
         rx.click
-            .withLatestFrom(viewModel.map(\.date))
-            .bind(to: clickObserver)
-            .disposed(by: disposeBag)
+                    .withLatestFrom(viewModel.map(\.date))
+                    .bind(to: videoPlayObserver)
+                    .disposed(by: disposeBag)
 
-        rx.doubleClick
-            .withLatestFrom(viewModel.map(\.date))
-            .bind(to: doubleClickObserver)
-            .disposed(by: disposeBag)
+                rx.doubleClick
+                    .withLatestFrom(viewModel.map(\.date))
+                    .bind(to: doubleClickObserver)
+                    .disposed(by: disposeBag)
 
-        rx.mouseEntered
-            .withLatestFrom(viewModel.map(\.date))
-            .bind(to: hoverObserver)
-            .disposed(by: disposeBag)
+                rx.mouseEntered
+                    .withLatestFrom(viewModel.map(\.date))
+                    .bind(to: hoverObserver)
+                    .disposed(by: disposeBag)
     }
 
     override func updateLayer() {

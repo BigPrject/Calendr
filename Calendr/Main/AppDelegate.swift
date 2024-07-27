@@ -21,6 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         #endif
+        let videoService = VideoService()
 
         viewController = MainViewController(
             autoLauncher: .default,
@@ -29,7 +30,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             dateProvider: DateProvider(calendar: .autoupdatingCurrent),
             screenProvider: ScreenProvider(notificationCenter: .default),
             userDefaults: .standard,
-            notificationCenter: .default
+            notificationCenter: .default,
+            videoService: videoService
         )
 
         setUpEditShortcuts()

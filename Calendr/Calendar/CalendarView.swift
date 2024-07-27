@@ -16,6 +16,8 @@ class CalendarView: NSView {
     private let hoverObserver: AnyObserver<Date?>
     private let clickObserver: AnyObserver<Date>
     private let doubleClickObserver: AnyObserver<Date>
+    private let videoPlayObserver: AnyObserver<Date>
+
 
     private let gridView = NSGridView(numberOfColumns: 8, rows: 7)
 
@@ -23,13 +25,16 @@ class CalendarView: NSView {
         viewModel: CalendarViewModel,
         hoverObserver: AnyObserver<Date?>,
         clickObserver: AnyObserver<Date>,
-        doubleClickObserver: AnyObserver<Date>
+        doubleClickObserver: AnyObserver<Date>,
+        videoPlayObserver: AnyObserver<Date>
+
     ) {
 
         self.viewModel = viewModel
         self.hoverObserver = hoverObserver
         self.clickObserver = clickObserver
         self.doubleClickObserver = doubleClickObserver
+        self.videoPlayObserver = videoPlayObserver
 
         super.init(frame: .zero)
 
@@ -143,21 +148,46 @@ class CalendarView: NSView {
                 .distinctUntilChanged()
                 .share(replay: 1)
                 .observe(on: MainScheduler.instance)
-
+            
             let cellView = CalendarCellView(
                 viewModel: cellViewModel,
                 hoverObserver: hoverObserver,
                 clickObserver: clickObserver,
                 doubleClickObserver: doubleClickObserver,
-                calendarScaling: viewModel.calendarScaling
+                calendarScaling: viewModel.calendarScaling,
+                videoPlayObserver: videoPlayObserver
             )
             gridView.cell(atColumnIndex: 1 + day % 7, rowIndex: 1 + day / 7).contentView = cellView
+            // Add tap gesture recognizer for video playback
+            let tapGesture = NSClickGestureRecognizer(target: self, action: #selector(cellTapped(_:)))
+            cellView.addGestureRecognizer(tapGesture)
+             // Use tag to identify the cell
+            
+            
         }
 
         rx.mouseExited
             .map(nil)
             .bind(to: hoverObserver)
             .disposed(by: disposeBag)
+        
+    }
+    
+    @objc private func cellTapped(_ gesture: NSClickGestureRecognizer) {
+        guard let cellView = gesture.view as? CalendarCellView else { return }
+        let day = cellView.tag
+        
+        viewModel.cellViewModelsObservable
+            .take(1)
+            .map { viewModels -> CalendarCellViewModel? in
+                guard day >= 0 && day < viewModels.count else { return nil }
+                return viewModels[day]
+            }
+            .compactMap { $0 }
+            .filter { $0.hasVideo }
+            .map { $0.date }
+            .bind(to: videoPlayObserver)
+            .disposed(by: DisposeBag())
     }
 
     override func updateTrackingAreas() {

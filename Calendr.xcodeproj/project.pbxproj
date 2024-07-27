@@ -157,7 +157,9 @@
 		34F96CEE25B523ED0020DEEA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F96CED25B523ED0020DEEA /* main.swift */; };
 		34FD09D925AE269600AAAAE2 /* DateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FD09D825AE269600AAAAE2 /* DateProvider.swift */; };
 		A40EBD362C3F33DC0074E2EB /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */; };
-		A40EBD382C3F551B0074E2EB /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40EBD372C3F551B0074E2EB /* ProgressBarView.swift */; };
+		A45F04142C516B1E0043567F /* MockVideoServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45F04132C516B1E0043567F /* MockVideoServiceProvider.swift */; };
+		A45F04162C531C050043567F /* VideoPlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45F04152C531C050043567F /* VideoPlayController.swift */; };
+		A4AF9C4F2C4F15AE005664C0 /* VideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF9C4E2C4F15AE005664C0 /* VideoService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -341,7 +343,9 @@
 		34F96CED25B523ED0020DEEA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		34FD09D825AE269600AAAAE2 /* DateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProvider.swift; sourceTree = "<group>"; };
 		A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
-		A40EBD372C3F551B0074E2EB /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		A45F04132C516B1E0043567F /* MockVideoServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVideoServiceProvider.swift; sourceTree = "<group>"; };
+		A45F04152C531C050043567F /* VideoPlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayController.swift; sourceTree = "<group>"; };
+		A4AF9C4E2C4F15AE005664C0 /* VideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoService.swift; sourceTree = "<group>"; };
 		C492E3CD29FD64BA007C7DF3 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -386,6 +390,7 @@
 				34F4C47C2A6C56AA00397C80 /* MockScreenProvider.swift */,
 				34F4C47E2A6C57B300397C80 /* MockStatusItemSettings.swift */,
 				346C5A4B2BC2D87F0007106C /* MockNextEventSettings.swift */,
+				A45F04132C516B1E0043567F /* MockVideoServiceProvider.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -756,7 +761,8 @@
 			isa = PBXGroup;
 			children = (
 				A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */,
-				A40EBD372C3F551B0074E2EB /* ProgressBarView.swift */,
+				A4AF9C4E2C4F15AE005664C0 /* VideoService.swift */,
+				A45F04152C531C050043567F /* VideoPlayController.swift */,
 			);
 			path = video;
 			sourceTree = "<group>";
@@ -986,6 +992,7 @@
 				34D55FE325F06669007F5C81 /* Sequence.swift in Sources */,
 				347D0FED2595467A002451EC /* CalendarCellView.swift in Sources */,
 				3421DA212693F12400056837 /* Calendar+Factory.swift in Sources */,
+				A45F04162C531C050043567F /* VideoPlayController.swift in Sources */,
 				34934CD628E69520009635D4 /* Prefs+UserDefaults.swift in Sources */,
 				34FD09D925AE269600AAAAE2 /* DateProvider.swift in Sources */,
 				34D25E4A292F9E2100557E70 /* ImageButton.swift in Sources */,
@@ -1004,6 +1011,7 @@
 				34F96CEE25B523ED0020DEEA /* main.swift in Sources */,
 				348B8D0425B2925100E518FE /* SettingsViewModel.swift in Sources */,
 				34F128D125968044007DF31C /* Label.swift in Sources */,
+				A4AF9C4F2C4F15AE005664C0 /* VideoService.swift in Sources */,
 				346E70C92802278E00A785FF /* ScreenProvider.swift in Sources */,
 				34F128F22597C340007DF31C /* WeekDayCellView.swift in Sources */,
 				34C72F9C25E9847300FD20FA /* EventListViewModel.swift in Sources */,
@@ -1018,6 +1026,7 @@
 				3487A43825E706F800FCC7D7 /* NextEventViewModel.swift in Sources */,
 				34A6434D25F42375000A0F08 /* EventViewPreview.swift in Sources */,
 				3453E6FD28386A84002DCC3C /* Bool.swift in Sources */,
+				A45F04142C516B1E0043567F /* MockVideoServiceProvider.swift in Sources */,
 				348D693D29ABDD91009F1882 /* CalendarScript.swift in Sources */,
 				34C459BC25DF114300561C29 /* AboutViewController.swift in Sources */,
 				34F2F7362BB739A500666507 /* Range.swift in Sources */,
@@ -1031,7 +1040,6 @@
 				34B5A09725B0F8A500F7F7ED /* NSButton.swift in Sources */,
 				34CC382D25B636A6006CBD99 /* Checkbox.swift in Sources */,
 				3430ED03259634E00045DA53 /* NSStackView+Rx.swift in Sources */,
-				A40EBD382C3F551B0074E2EB /* ProgressBarView.swift in Sources */,
 				34F4C47F2A6C57B300397C80 /* MockStatusItemSettings.swift in Sources */,
 				34F4C47B2A6C54A900397C80 /* StatusItemPreview.swift in Sources */,
 				346C5A4A2BC2D6F60007106C /* NextEventPreview.swift in Sources */,

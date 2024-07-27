@@ -20,6 +20,7 @@ enum Accessibility {
         static let settingsBtn = "main_settings_button"
         static let pinBtn = "main_pin_button"
         static let videoBtn = "video_button"
+        static let playBtn = "play_button"
     }
 
     enum MenuBar {
@@ -75,5 +76,6 @@ enum Accessibility {
             static let view = "settings_about_view"
             static let quitBtn = "settings_about_quit"
         }
+    
     }
 }

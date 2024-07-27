@@ -14,8 +14,9 @@ struct CalendarCellViewModel: Equatable {
     let isSelected: Bool
     let isHovered: Bool
     let events: [EventModel]
+    let hasVideo: Bool
 
-    private let calendar: Calendar
+     let calendar: Calendar
 
     init(
         date: Date,
@@ -24,7 +25,8 @@ struct CalendarCellViewModel: Equatable {
         isSelected: Bool,
         isHovered: Bool,
         events: [EventModel],
-        calendar: Calendar
+        calendar: Calendar,
+        hasVideo: Bool
     ) {
         self.date = date
         self.inMonth = inMonth
@@ -33,6 +35,7 @@ struct CalendarCellViewModel: Equatable {
         self.isHovered = isHovered
         self.events = events
         self.calendar = calendar
+        self.hasVideo = hasVideo
     }
 }
 
