@@ -214,6 +214,7 @@ class VideoViewController: NSViewController {
     @objc private func stopRecording() {
         movieOutput.stopRecording()
         startBtn.isEnabled = true
+        
     }
 }
 

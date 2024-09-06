@@ -7,15 +7,17 @@
 
 import Foundation
 import Cocoa
-
+import RxSwift
 
 protocol VideoServiceProviding {
     func hasVideoForDate(_ date: Date) -> Bool
     func getVideoURLForDate(_ date: Date) -> URL?
     func getAllVideoDates() -> [Date]
+
 }
 
 class VideoService: VideoServiceProviding {
+    
     private let fileManager = FileManager.default
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -32,6 +34,7 @@ class VideoService: VideoServiceProviding {
             print("Checking for video on date: \(dateFormatter.string(from: date)), result: \(hasVideo)")
             return hasVideo
     }
+
 
     func getVideoURLForDate(_ date: Date) -> URL? {
             print("getVideoURLForDate() called for date: \(dateFormatter.string(from: date))")

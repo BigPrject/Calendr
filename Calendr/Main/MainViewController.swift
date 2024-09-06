@@ -403,12 +403,15 @@ class MainViewController: NSViewController {
         playBtn.rx.tap
             .withLatestFrom(selectedDate)
             .bind{ date in
-                self.playVideo(for: date)
-            }
+                self.presentVideoList() }
             .disposed(by: disposeBag)
         
 
         
+    }
+    private func presentVideoList() {
+        let videoListVC = VideoListViewController(videoService: videoService)
+        self.presentAsModalWindow(videoListVC)
     }
     
     private func presentVideoRecordingController() {

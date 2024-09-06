@@ -159,6 +159,7 @@
 		A40EBD362C3F33DC0074E2EB /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */; };
 		A45F04142C516B1E0043567F /* MockVideoServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45F04132C516B1E0043567F /* MockVideoServiceProvider.swift */; };
 		A45F04162C531C050043567F /* VideoPlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45F04152C531C050043567F /* VideoPlayController.swift */; };
+		A45F041A2C54A4630043567F /* VideoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45F04192C54A4630043567F /* VideoListViewController.swift */; };
 		A4AF9C4F2C4F15AE005664C0 /* VideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF9C4E2C4F15AE005664C0 /* VideoService.swift */; };
 /* End PBXBuildFile section */
 
@@ -345,6 +346,7 @@
 		A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		A45F04132C516B1E0043567F /* MockVideoServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockVideoServiceProvider.swift; sourceTree = "<group>"; };
 		A45F04152C531C050043567F /* VideoPlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayController.swift; sourceTree = "<group>"; };
+		A45F04192C54A4630043567F /* VideoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewController.swift; sourceTree = "<group>"; };
 		A4AF9C4E2C4F15AE005664C0 /* VideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoService.swift; sourceTree = "<group>"; };
 		C492E3CD29FD64BA007C7DF3 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -763,6 +765,7 @@
 				A40EBD352C3F33DC0074E2EB /* VideoViewController.swift */,
 				A4AF9C4E2C4F15AE005664C0 /* VideoService.swift */,
 				A45F04152C531C050043567F /* VideoPlayController.swift */,
+				A45F04192C54A4630043567F /* VideoListViewController.swift */,
 			);
 			path = video;
 			sourceTree = "<group>";
@@ -961,6 +964,7 @@
 				3421DA0E2693E35000056837 /* EventListViewPreview.swift in Sources */,
 				34651F5A25E2F08500518C5A /* String.swift in Sources */,
 				34651F7425E3207200518C5A /* WorkspaceServiceProvider.swift in Sources */,
+				A45F041A2C54A4630043567F /* VideoListViewController.swift in Sources */,
 				34286E4625D5CD9C0097EC5D /* WeekNumberCellView.swift in Sources */,
 				34ABB9F229A2AFA30021F3CF /* CursorButton.swift in Sources */,
 				341B2B3E25D06A6F00336342 /* Dropdown.swift in Sources */,
@@ -1307,10 +1311,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Calendr/Config/Calendr.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PBL2A8SJ3C;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Calendr/Config/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1333,10 +1339,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Calendr/Config/Calendr.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PBL2A8SJ3C;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Calendr/Config/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
