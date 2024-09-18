@@ -5,7 +5,7 @@
 
 Menu bar calendar for macOS
 
-This fork is for a personal feature, makes me record 15 second recap video at end of day! I also used this oppertunity to learn swift.  
+This fork is for a personal feature, makes me record 15 second recap video at end of day! I also used this opportunity  to learn swift.  
 
 
 
